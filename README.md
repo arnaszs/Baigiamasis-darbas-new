@@ -1,2 +1,3 @@
-# Baigiamasis-darbas-new
-Baigiamasis ecomerce store darbas
+# Baigiamasis Darbas
+End job for courses.
+A simplistic ecommerce store (visual only).
