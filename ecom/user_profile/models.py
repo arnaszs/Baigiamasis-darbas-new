@@ -14,7 +14,7 @@ class Profile(models.Model):
         related_name='profile',
         on_delete=models.CASCADE,
         blank=True, null=True)
-    picture = models.ImageField(_("picture"), upload_to='user_profile/pictures')
+    picture = models.ImageField(_("picture"), upload_to='user_profile')
     
 
     class Meta:

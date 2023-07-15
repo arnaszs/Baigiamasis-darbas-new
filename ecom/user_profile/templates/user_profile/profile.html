@@ -3,7 +3,7 @@
 {% block content %}
 <h1>{{ username_ }}</h1>
 {% if user_.profile and user_.profile.picture %}
-<img class="user-profile-picture" src="{{ user_.profile.picture.url }}">
+<img class="user-profile-picture" src="/static{{ user_.profile.picture.url }}">
 {% endif %}
 {% if user_.first_name or user_.last_name %}
     <p>{{ user_.first_name }} {{ user_.last_name }}</p>
