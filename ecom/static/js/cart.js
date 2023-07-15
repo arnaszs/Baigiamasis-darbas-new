@@ -1,47 +1,27 @@
-var updateButton = document.getElementsByClassName('update-cart')
+const updateUrl = "/update_item/";
 
-for(var i=0; i<updateButton.length; i++){
-    updateButton[i].addEventListener('click',function(){
-        var productId = this.dataset.product
-        var action = this.dataset.action
+const getToken = name => {
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        const cookie = cookies.filter(c => c.trim().substring(0, name.length + 1) === name + '=')[0];
+        return decodeURIComponent(cookie.substring(name.length + 1));
+    }
+    return null;
+};
 
-        console.log('producId', productId,'action',action)
-
-        console.log('USER',user)
-
-        if(user === 'AnonymousUser'){
-            console.log('Not Loged in')
-        }
-        else{
-            updateUserOrder(productId,action)
-        }
-    })
-}
-
-
-function updateUserOrder(id,act){
-    console.log('USER loged in sending data')
-
-    var url = '/update_item/'
-
-    fetch(url,{
-        method : 'POST',
-        header:{
-            'Accept':'application/json',
-            'Content-Type':'application/json',
-            'X-CSRFToken':csrftoken,
+const updateUserOrder = (id, act) => {
+    fetch(updateUrl, {
+        method: 'POST',
+        header: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getToken('csrftoken'),
         },
-        body:JSON.stringify({'productId': id, 
-        'action': act}),
-    })
-
-    .then((response) =>{
-        return response.json()
-    })
-
-    .then ((data)=>
-        console.log('data:',data),
-        location.reload()
-    )
-
-}
+        body: JSON.stringify({
+            'productId': id,
+            'action': act
+        }),
+    }).then(() => {
+        window.location.reload();
+    });
+};
