@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from PIL import Image
 
 
+
 # Create your models here.
 class Profile(models.Model):
     user = models.OneToOneField(

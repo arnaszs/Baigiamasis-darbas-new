@@ -1,7 +1,7 @@
 {% extends 'store/main.html' %}
 {% block title %}Login to {{ block.super }}{% endblock title %}
 {% block content %}
-<h1>Login to Game Room</h1>
+<h1>Login to Arnas eShop</h1>
 {% if form.errors %}
 <p class="box box-error">Login error. Please try again.</p>
 {% endif %}
@@ -11,5 +11,5 @@
 <p><button type="submit">Log in</button></p>
 </form>
 <p><a href="{% url 'password_reset' %}">Forgot password?</a></p>
-<p>If you do not have an account, please <a href="{% url 'signup' %}">sign up</a>.
+<p>If you don't have an account, please <a href="{% url 'signup' %}">sign up</a>.
 {% endblock content %}

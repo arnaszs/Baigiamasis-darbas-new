@@ -1,8 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import *
 from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
+
+
+def product_detail(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    return render(request, 'store/product_detail.html', {'product': product})
+
 
 
 # Create your views here.
