@@ -3,7 +3,7 @@
 Clone the repository:
 
 ```
-git clone https://github.com/your-username/django-ecommerce.git
+git clone https://github.com/your-username/Baigiamasis-darbas-new.git
 ```
 
 Navigate to the project directory:
