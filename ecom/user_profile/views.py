@@ -5,24 +5,35 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from . forms import ProfileUpdateForm, UserUpdateForm
 from django.utils.translation import gettext_lazy as _
-from ecomm.models import Order
+from ecomm.models import Order, Customer
+from .models import Profile
 
 User = get_user_model()
 
 
 def profile(request, user_id=None):
-    if user_id == None:
+    if user_id is None:
         user = request.user
     else:
         user = get_object_or_404(get_user_model(), id=user_id)
     cartItems = 0
     if request.user.is_authenticated:
+        # if not hasattr(request.user, 'customer'):
+        #     customer = Customer.objects.create(
+        #         user=request.user,
+        #         name=request.user.first_name,
+        #         email=request.user.email
+        #     )
         order = Order.objects.get(
             customer=request.user.customer,
             complete=False
-            )
+        )
         cartItems = order.get_cart_item
-    return render(request, 'user_profile/profile.html', {'user_': user, 'cartItem': cartItems})
+    return render(
+        request,
+        'user_profile/profile.html',
+        {'user_': user, 'cartItem': cartItems}
+    )
 
 
 @login_required
@@ -32,12 +43,12 @@ def profile_update(request):
         user_form = UserUpdateForm(
             request.POST,
             instance=request.user
-            )
+        )
         profile_form = ProfileUpdateForm(
             request.POST,
             request.FILES,
             instance=request.user.profile
-            )
+        )
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
@@ -45,15 +56,24 @@ def profile_update(request):
             return redirect('profile')
     else:
         user_form = UserUpdateForm(instance=request.user)
+        if not hasattr(request.user, 'profile'):
+            request.user.profile = Profile.objects.create(user=request.user)
         profile_form = ProfileUpdateForm(instance=request.user.profile)
-    return render(request, 'user_profile/profile_update.html', {'user_form': user_form, 'profile_form': profile_form})
+    return render(
+        request,
+        'user_profile/profile_update.html',
+        {'user_form': user_form, 'profile_form': profile_form}
+    )
 
 
 @csrf_protect
 def signup(request):
     if request.user.is_authenticated:
-        messages.info(request, _('In order to sign up, you need to logout first'))
-        return redirect('index')
+        messages.info(
+            request,
+            _('In order to sign up, you need to logout first')
+        )
+        return redirect('main')
     if request.method == "POST":
         error = False
         first_name = request.POST.get('first_name')
@@ -62,15 +82,41 @@ def signup(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         password_confirm = request.POST.get('password_confirm')
-        if not username or len(username) < 3 or User.objects.filter(username=username).exists():
+        # error = validate_signup_form(
+        #     User,
+        #     request,
+        #     _,
+        #     username,
+        #     email,
+        #     password,
+        #     password_confirm,
+        # )
+        error = False
+        if (not username
+                or len(username) < 3
+                or User.objects.filter(username=username).exists()):
             error = True
-            messages.error(request, _('Username is too short or already exists.'))
-        if not email or len(email) < 3 or User.objects.filter(email=email).exists():
+            messages.error(
+                request,
+                _('Username is too short or already exists.')
+            )
+        if (not email
+                or len(email) < 3
+                or User.objects.filter(email=email).exists()):
             error = True
-            messages.error(request, _('Email is invalid or user with this email already exists.'))
-        if not password or not password_confirm or password != password_confirm or len(password) < 8:
+            messages.error(
+                request,
+                _('Email is invalid or user with this email already exists.')
+            )
+        if (not password
+                or not password_confirm
+                or password != password_confirm
+                or len(password) < 8):
             error = True
-            messages.error(request, _("Password must be at least 8 characters long and match."))
+            messages.error(
+                request,
+                _("Password must be at least 8 characters long and match.")
+            )
         if not error:
             user = User.objects.create(
                 username=username,
@@ -78,8 +124,19 @@ def signup(request):
                 first_name=first_name,
                 last_name=last_name,
             )
+            if not hasattr(request.user, 'customer'):
+                customer = Customer.objects.create(
+                    user=user,
+                    name=user.first_name,
+                    email=user.email
+                )
+                user.customer = customer
+                Order.objects.create(
+                    customer=customer,
+                    complete=False
+                )
             user.set_password(password)
             user.save()
             messages.success(request, _("User registration successful!"))
-            return redirect('profile')
+            return redirect('login')
     return render(request, 'user_profile/signup.html')

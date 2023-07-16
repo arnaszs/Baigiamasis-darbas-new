@@ -7,7 +7,7 @@ User = get_user_model()
 
 
 @receiver(post_save, sender=User)
-def sync_profile(sender, instance, created, **kwargs):
+def sync_profile(sender, instance, created, **kwargs) -> None:
     if created:
         Profile.objects.create(user=instance)
     else:

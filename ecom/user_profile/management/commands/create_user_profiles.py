@@ -19,5 +19,7 @@ class Command(BaseCommand):
             raise CommandError(e)
         else:
             self.stdout.write(
-                self.style.SUCCESS('%d user profiles created.' % created_profile_count)
+                self.style.SUCCESS(
+                    '{} user profiles created.'.format(created_profile_count)
+                )
             )

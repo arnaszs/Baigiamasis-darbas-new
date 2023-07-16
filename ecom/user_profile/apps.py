@@ -6,5 +6,4 @@ class UserProfileConfig(AppConfig):
     name = 'user_profile'
 
     def ready(self) -> None:
-        from . signals import sync_profile
         return super().ready()

@@ -2,11 +2,13 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-# Create your models here.
-
-# Customer Model
 class Customer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
     name = models.CharField(max_length=200, null=True)
     email = models.CharField(max_length=200, null=True)
 
@@ -14,7 +16,6 @@ class Customer(models.Model):
         return self.name
 
 
-# Product Model
 class Product(models.Model):
     name = models.CharField(max_length=200, null=True)
     price = models.FloatField()
@@ -27,22 +28,16 @@ class Product(models.Model):
 
     @property
     def get_image(self):
-        try:
-            url = self.image.url
-        except:
-            url = ''
-
-        return url
+        return self.image.url if self.image is not None else ''
 
 
-# Order Model
 class Order(models.Model):
     customer = models.ForeignKey(
         Customer,
         on_delete=models.SET_NULL,
         blank=True,
         null=True
-        )
+    )
     date_ordered = models.DateTimeField(auto_now_add=True)
     complete = models.BooleanField(default=False, null=True, blank=True)
     transaction_id = models.CharField(max_length=200, null=True)
@@ -62,7 +57,7 @@ class Order(models.Model):
         orderItems = self.orderitem_set.all()
 
         for i in orderItems:
-            if i.product.digital == False:
+            if i.product.digital is False:
                 shipping = True
         return shipping
 
@@ -73,7 +68,6 @@ class Order(models.Model):
         return totalitem
 
 
-# Order Item Model
 class OrderItem(models.Model):
     product = models.ForeignKey(
         Product,
@@ -94,7 +88,6 @@ class OrderItem(models.Model):
         return round(total, 2)
 
 
-# Shipping Model
 class ShippingAddress(models.Model):
     customer = models.ForeignKey(
         Customer,
