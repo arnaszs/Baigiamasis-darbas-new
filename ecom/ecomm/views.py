@@ -46,8 +46,15 @@ def cart(request):
         if hasattr(request.user, 'customer'):
             customer = request.user.customer
         else:
-            customer = Customer.objects.create(user=request.user, name=request.user.first_name, email=request.user.email)
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+            customer = Customer.objects.create(
+                user=request.user,
+                name=request.user.first_name,
+                email=request.user.email
+                )
+        order, created = Order.objects.get_or_create(
+            customer=customer,
+            complete=False
+            )
         items = order.orderitem_set.all()
         cartItems = order.get_cart_item
     else:
@@ -62,7 +69,10 @@ def cart(request):
 def checkout(request):
     if request.user.is_authenticated:
         customer = request.user.customer
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        order, created = Order.objects.get_or_create(
+            customer=customer,
+            complete=False
+            )
         items = order.orderitem_set.all()
         cartItems = order.get_cart_item
     else:
@@ -85,9 +95,15 @@ def updateItem(request):
 
     customer = request.user.customer
     product = Product.objects.get(id=productId)
-    order, created = Order.objects.get_or_create(customer=customer, complete=False)
+    order, created = Order.objects.get_or_create(
+        customer=customer,
+        complete=False
+        )
 
-    orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
+    orderItem, created = OrderItem.objects.get_or_create(
+        order=order,
+        product=product
+        )
 
     if action == 'add':
         orderItem.quantity = (orderItem.quantity + 1)

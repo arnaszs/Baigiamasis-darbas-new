@@ -5,7 +5,6 @@ from django.utils.translation import gettext_lazy as _
 from PIL import Image
 
 
-
 # Create your models here.
 class Profile(models.Model):
     user = models.OneToOneField(
@@ -15,7 +14,6 @@ class Profile(models.Model):
         on_delete=models.CASCADE,
         blank=True, null=True)
     picture = models.ImageField(_("picture"), upload_to='user_profile')
-    
 
     class Meta:
         verbose_name = _("profile")

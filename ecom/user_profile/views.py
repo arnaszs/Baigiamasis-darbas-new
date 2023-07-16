@@ -17,7 +17,10 @@ def profile(request, user_id=None):
         user = get_object_or_404(get_user_model(), id=user_id)
     cartItems = 0
     if request.user.is_authenticated:
-        order = Order.objects.get(customer=request.user.customer, complete=False)
+        order = Order.objects.get(
+            customer=request.user.customer,
+            complete=False
+            )
         cartItems = order.get_cart_item
     return render(request, 'user_profile/profile.html', {'user_': user, 'cartItem': cartItems})
 
@@ -26,8 +29,15 @@ def profile(request, user_id=None):
 @csrf_protect
 def profile_update(request):
     if request.method == "POST":
-        user_form = UserUpdateForm(request.POST, instance=request.user)
-        profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+        user_form = UserUpdateForm(
+            request.POST,
+            instance=request.user
+            )
+        profile_form = ProfileUpdateForm(
+            request.POST,
+            request.FILES,
+            instance=request.user.profile
+            )
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()

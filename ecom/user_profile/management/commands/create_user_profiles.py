@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand, CommandError
 from user_profile.models import Profile

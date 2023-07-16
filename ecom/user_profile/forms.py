@@ -4,6 +4,7 @@ from . import models
 
 User = get_user_model()
 
+
 class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField()
 
@@ -16,5 +17,3 @@ class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = models.Profile
         fields = ("picture",)
-
-
