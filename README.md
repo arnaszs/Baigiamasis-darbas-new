@@ -54,11 +54,11 @@ Access the website at http://localhost:8000 in your browser.
 
 Contributions are welcome! If you'd like to contribute to this project, please follow these steps:
 
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix.
-3. Make your changes and commit them with descriptive messages.
-4. Push your changes to your fork.
-5. Submit a pull request, explaining your changes in detail and referencing any relevant issues.
+*  Fork the repository.
+*  Create a new branch for your feature or bug fix.
+*  Make your changes and commit them with descriptive messages.
+*  Push your changes to your fork.
+*  Submit a pull request, explaining your changes in detail and referencing any relevant issues.
 
 ## Acknowledgements
 
