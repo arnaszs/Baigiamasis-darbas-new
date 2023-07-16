@@ -33,7 +33,7 @@ Install the required dependencies:
 ```
 pip install -r requirements.txt
 ```
-Set up the database:
+Set up the database (I'm using PostGreSQL change the credentials for it, or use another database):
 
 ```
 python manage.py migrate
