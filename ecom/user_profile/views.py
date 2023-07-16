@@ -17,7 +17,7 @@ def profile(request, user_id=None):
         user = get_object_or_404(get_user_model(), id=user_id)
     cartItems = 0
     if request.user.is_authenticated:
-        order = Order.objects.get(customer=request.user.customer)
+        order = Order.objects.get(customer=request.user.customer, complete=False)
         cartItems = order.get_cart_item
     return render(request, 'user_profile/profile.html', {'user_': user, 'cartItem': cartItems})
 
